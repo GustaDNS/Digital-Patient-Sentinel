@@ -5,11 +5,11 @@
 ![Focus](https://img.shields.io/badge/Focus-GDPR%20%26%20Digital%20Health-purple?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)
 
-![Project Banner](https://via.placeholder.com/1000x300.png?text=Digital+Patient+Sentinel:+EHR+%2B+IoT+Integration+Pipeline)
+![Project Banner](assets/banner.png)
 
 ## 📖 Project Overview
 
-**Digital Patient Sentinel** is an end-to-end Machine Learning pipeline designed to build **"Digital Patient Models"** for intensive care units (ICU). The system integrates static clinical data (EHR) with dynamic sensor signals (IoT) to predict acute critical risks, such as **Sepsis**.
+**Digital Patient Sentinel** is an end-to-end Machine Learning pipeline for intensive care units (ICU). The system integrates static clinical data (EHR) with dynamic sensor signals (IoT) to predict acute critical risks, such as **Sepsis**.
 
 > *"The goal is not just to train a model, but to engineer a trustworthy system that bridges the gap between raw data and clinical decision support."*
 
@@ -32,4 +32,42 @@ The model moves beyond "black-box" approaches by incorporating physiological dom
 Built as a structured Python package to simulate a production environment:
 * **Ingestion:** Simulates heterogeneous data sources (Clinical demographics + High-frequency vitals).
 * **Cleaning & Encoding:** Robust handling of categorical data and missing values.
-* **Modeling:** Random Forest
+* **Modeling:** Random Forest classifier optimized for clinical interpretability (Recall/Precision).
+
+### 4. 🩺 Clinical Validation & Explainability
+Trust is key in healthcare. The pipeline outputs a "White-box" validation report, prioritizing **Feature Importance** to prove that the model relies on physiological signals (e.g., Lactate, Blood Pressure) rather than biased demographic proxies.
+
+---
+
+## 🏗️ System Architecture
+
+The data flows through a linear, audit-ready pipeline:
+
+```mermaid
+graph LR
+    A[Raw ICU Data] -->|Ingestion| B(Privacy Module)
+    B -->|SHA-256 Hashing| C{Biomedical Feature Eng.}
+    C -->|Calculation| D["ML Model (Random Forest)"]
+    D -->|Prediction| E[Clinical Validation Report]
+
+```
+
+## 📂 Repository Structure
+
+The project is organized as a maintainable Python package.
+
+```text
+digital_patient_sentinel/
+│
+├── src/                        # Source Code (Python Package)
+│   ├── __init__.py             # Package initializer
+│   ├── data_loader.py          # Synthetic Data Generator (Mocking Hospital DB)
+│   ├── privacy.py              # GDPR Logic & Hashing
+│   ├── features.py             # Biomedical Feature Engineering
+│   └── model.py                # ML Model Wrapper & Validation Reports
+│
+├── assets/                     # Images for documentation
+├── main.py                     # Pipeline Orchestrator (Entry Point)
+├── requirements.txt            # Project dependencies
+└── README.md                   # Technical Documentation
+```
